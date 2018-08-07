@@ -4,6 +4,10 @@ import com.qianfeng.etl.util.IpParserUtil;
 import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 需求：两个100G文件 进行统计分析到一份数据中（表格式，字段相同），使用java分析合并，内存16G+1T主机
@@ -131,30 +135,35 @@ public class BigFileSplitAndMerge {
     /**
      * 以行为单位进行读取，分割字符
      */
-    public static void ReadOfLine(String src,String destPath){
+    public static List ReadOfLine(String src,String destPath){
+        List<String> list = new ArrayList<String>();
         File file = new File(src);
         BufferedReader reader = null;
         String temp = null;
         int line  = 1;
+        String [] str = new String[100];
         try {
             reader = new BufferedReader(new FileReader(file));
             while((temp=reader.readLine())!=null){
+
              String string = getNewString(temp);
-             saveRecordInFile(string,destPath);
+                list.add(string);
+           //  saveRecordInFile(string,destPath);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        return list;
     }
-    //保存到文件
+    //行读取保存到文件
     private static void saveRecordInFile(String newStr,String destPath) {
         File record = new File(destPath); // 保存结果文件
         FileWriter writer = null;
         try {
-
-
             if (!record.exists()){
                 // 文件不存在则新建
                 File dir = new File(record.getParent());
@@ -163,6 +172,7 @@ public class BigFileSplitAndMerge {
             }
             writer = new FileWriter(record,true);//追加写入文件。
             writer.write(newStr);
+
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
@@ -173,21 +183,64 @@ public class BigFileSplitAndMerge {
             }
         }
     }
-    //切分行字段
-    // 以空格等正则分割字符串重新组合字符串或字段
+    // 行切分
     private static String getNewString(String temp) {
         String str1="";
         String str2="";
         String str3="";
         //String []arrayStr=temp.split("\\s+");
         String []arrayStr=temp.split("\\^A");
-        str1="\n\t\t"+arrayStr[0];
+        str1=arrayStr[0]+"\r\n";
+
 //        str2="\t"+arrayStr[1];
 //        str3="\t"+arrayStr[2];
         return str1;
     }
     // 保存行字符到文件
-    
+
+
+  // 返回数量对多的IP
+   private static String ReturnHighIp(List list){
+//        String[] names = {"a", "b", "a", "b", "c"};
+//        Map<String, Integer> map = new HashMap<String, Integer>();
+//        for (int i = 0, k = names.length; i < k; i++) {
+//
+//        }
+      Map<String, Integer> map = new HashMap<String, Integer>();
+        for (int i=0;i<list.size();i++){
+            Integer sum = map.get(list.get(i));
+            map.put((String) list.get(i), sum == null ? 1 : sum + 1);
+
+        }
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+       //  System.out.println(entry.getKey() + "个数是：" + entry.getValue());
+        } //320  50*1024*1024*1024
+        // 找出IP数最大值  list 存储长度最大值为2*31次方21亿 容量*32bits ， 21亿  一条日志0.6-1.2kb ，50G大约5千-8千万条数据
+        List<Integer> list1 = new ArrayList<Integer>();
+        for (String temp : map.keySet()) {
+            int value = map.get(temp);
+            list1.add(value);
+        }
+        int max = 0;
+        for (int i = 0; i < list1.size(); i++) {
+          int size = list1.get(i);
+            max = (max > size) ? max : size;
+        }
+
+        for (String ke : map.keySet()) {
+            if (max == map.get(ke)) {
+                return ke + "=" + max;
+            }
+        }
+        //map集合遍历。
+//        for( Map.Entry entry:map.entrySet()){
+//            String key = entry.getKey().toString();
+//            String value = entry.getValue().toString();
+//            System.out.println("key="+key+" value"+value);
+//        }
+
+     return  null;
+}
 
 
     public static void main(String[] args) {
@@ -221,9 +274,12 @@ public class BigFileSplitAndMerge {
          */
         String srcFile = "E:\\BC-11.1533008182809.log";
         String destFile ="E:\\RecordLine.txt";
-        System.out.println("行读取分析开始");
-        ReadOfLine(srcFile,destFile);
-        System.out.println("行读取分析结束");
+//        System.out.println("行读取分析开始");
+//        ReadOfLine(srcFile,destFile);
+//        System.out.println("行读取分析结束");
+
+
+        System.out.println(ReturnHighIp(ReadOfLine(srcFile,destFile)));
     }
 
 
