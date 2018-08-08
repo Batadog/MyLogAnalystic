@@ -215,7 +215,7 @@ public class BigFileSplitAndMerge {
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
        //  System.out.println(entry.getKey() + "个数是：" + entry.getValue());
         } //320  50*1024*1024*1024
-        // 找出IP数最大值  list 存储长度最大值为2*31次方21亿 容量*32bits ， 21亿  一条日志0.6-1.2kb ，50G大约5千-8千万条数据
+        // 找出IP数最大值  list 存储长度最大值为2*31次方21亿 容量*32bits ，为8G 容量 一条日志0.6-1.2kb ，50G大约5千-8千万条数据
         List<Integer> list1 = new ArrayList<Integer>();
         for (String temp : map.keySet()) {
             int value = map.get(temp);
@@ -231,7 +231,10 @@ public class BigFileSplitAndMerge {
             if (max == map.get(ke)) {
                 return ke + "=" + max;
             }
+
+
         }
+
         //map集合遍历。
 //        for( Map.Entry entry:map.entrySet()){
 //            String key = entry.getKey().toString();
