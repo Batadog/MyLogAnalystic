@@ -160,7 +160,7 @@ public class BigFileSplitAndMerge {
         return list;
     }
     //行读取保存到文件
-    private static void saveRecordInFile(String newStr,String destPath) {
+    public static void saveRecordInFile(String newStr,String destPath) {
         File record = new File(destPath); // 保存结果文件
         FileWriter writer = null;
         try {

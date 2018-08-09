@@ -17,6 +17,7 @@ public class CheckOfDate {
         }
         //验证月份天数
         String[] arrDate = date.split("-");
+        //字符转Integer类型
         int year = Integer.valueOf(arrDate[0]);
         int month = Integer.valueOf(arrDate[1]);
         int day = Integer.valueOf(arrDate[2]);
