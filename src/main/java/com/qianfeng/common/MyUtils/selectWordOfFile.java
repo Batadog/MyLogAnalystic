@@ -1,4 +1,4 @@
-package com.qianfeng.common.DealWithFile;
+package com.qianfeng.common.MyUtils;
 
 
 import java.io.*;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class wordcollect {
+public class selectWordOfFile {
 
     public static List ReadOfLine(String src, String destPath) {
         List<Integer> list = new ArrayList<Integer>();

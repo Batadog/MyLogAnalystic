@@ -1,11 +1,10 @@
-package com.qianfeng.common.DealWithFile;
+package com.qianfeng.common.MyUtils;
 
 /**
  * 判断是否是素数、遍历0- n 之间的素数
  */
 public class PrimeNUmber {
-    public static void checkPrimeNumber(int n) {
-
+    public static boolean checkPrimeNumber(int n) {
         for (int i = 2; i <= n; i++) // 1不是素数，所以直接从2开始循环
         {
             int j = 2;
@@ -19,10 +18,29 @@ public class PrimeNUmber {
 
                 // BigFileSplitAndMerge.saveRecordInFile(i+"\t","//"); 保存到文件
             }
+            // 返回个判断值 是否是质数
+            if (n%i==0){
+                return false;
+            }
         }
+        return true;
+    }
+    public  static boolean primeNmuber(int number){
+        boolean check = true;
+        for (int i =2;i<number;i++){
+
+            if (number%i==0){
+                return false;
+            }
+        }
+       return true;
     }
 
+
     public static void main(String[] args) {
-        checkPrimeNumber(100);
+
+       // checkPrimeNumber(5);
+     //   System.out.println(primeNmuber(6));
+
     }
 }

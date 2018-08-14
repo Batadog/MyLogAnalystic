@@ -1,6 +1,5 @@
-package com.qianfeng.common.DealWithFile;
+package com.qianfeng.common.MyUtils;
 
-import com.qianfeng.etl.util.IpParserUtil;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -143,19 +142,19 @@ public class BigFileSplitAndMerge {
         int line  = 1;
         String [] str = new String[100];
         try {
+            int count =0;
             reader = new BufferedReader(new FileReader(file));
             while((temp=reader.readLine())!=null){
 
              String string = getNewString(temp);
                 list.add(string);
-           //  saveRecordInFile(string,destPath);
+          saveRecordInFile(string,destPath);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         return list;
     }
@@ -210,7 +209,6 @@ public class BigFileSplitAndMerge {
         for (int i=0;i<list.size();i++){
             Integer sum = map.get(list.get(i));
             map.put((String) list.get(i), sum == null ? 1 : sum + 1);
-
         }
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
        //  System.out.println(entry.getKey() + "个数是：" + entry.getValue());
@@ -231,7 +229,6 @@ public class BigFileSplitAndMerge {
             if (max == map.get(ke)) {
                 return ke + "=" + max;
             }
-
 
         }
 
@@ -278,9 +275,8 @@ public class BigFileSplitAndMerge {
         String srcFile = "E:\\BC-11.1533008182809.log";
         String destFile ="E:\\RecordLine.txt";
 //        System.out.println("行读取分析开始");
-//        ReadOfLine(srcFile,destFile);
+       ReadOfLine(srcFile,destFile);
 //        System.out.println("行读取分析结束");
-
 
         System.out.println(ReturnHighIp(ReadOfLine(srcFile,destFile)));
     }

